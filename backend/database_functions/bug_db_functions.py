@@ -24,3 +24,14 @@ async def read_all_bugs():
         bug_list.append(BugModel(**document))
     return bug_list
 
+
+# Query Bugs by Name
+async def read_bugs_by_name(title):
+    bug_list = []
+    regex_expression = ".*" + title.lower() + ".*"
+    query = { "name": { "$regex": regex_expression } }
+    print(query)
+    cursor = collection.find({"name": {"$regex": regex_expression}})
+    async for document in cursor:
+        bug_list.append(BugModel(**document))
+    return bug_list
